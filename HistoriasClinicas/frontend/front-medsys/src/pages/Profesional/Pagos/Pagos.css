@@ -1,0 +1,88 @@
+.pagos-container {
+  padding: 20px;
+}
+
+.pagos-container h2 {
+  color: #0096c7;
+  margin-bottom: 5px;
+}
+
+.pagos-container p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+/* Tabla */
+.pagos-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.pagos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pagos-table th,
+.pagos-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.pagos-table th {
+  background: #f0f8fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Estados */
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+}
+
+.status.pendiente {
+  background: #f39c12;
+}
+
+.status.pagado {
+  background: #2ecc71;
+}
+
+/* Botones */
+.btn-pay,
+.btn-view {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-right: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-pay {
+  background: #0096c7;
+  color: white;
+}
+
+.btn-pay:hover {
+  background: #0077a3;
+}
+
+.btn-view {
+  background: #48cae4;
+  color: white;
+}
+
+.btn-view:hover {
+  background: #00b4d8;
+}

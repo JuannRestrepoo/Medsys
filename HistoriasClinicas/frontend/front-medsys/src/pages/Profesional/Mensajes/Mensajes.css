@@ -1,0 +1,136 @@
+.mensajes-container {
+  padding: 20px;
+}
+
+.mensajes-container h2 {
+  color: #0096c7;
+  margin-bottom: 5px;
+}
+
+.mensajes-container p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.mensajes-layout {
+  display: flex;
+  gap: 20px;
+}
+
+/* Lista de conversaciones */
+.conversaciones-lista {
+  width: 30%;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 15px;
+}
+
+.conversaciones-lista h3 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.conversaciones-lista ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conversaciones-lista li {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.conversaciones-lista li:hover {
+  background: #f0f8fa;
+}
+
+.conversaciones-lista li.activo {
+  background: #0096c7;
+  color: white;
+}
+
+/* Chat */
+.chat-area {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  color: #0096c7;
+}
+
+.chat-mensajes {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mensaje {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.mensaje.doctor {
+  align-self: flex-end;
+  background: #0096c7;
+  color: white;
+}
+
+.mensaje.paciente {
+  align-self: flex-start;
+  background: #f0f8fa;
+  color: #2c3e50;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #eee;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 0 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.chat-input button {
+  background: #0096c7;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 0 0 12px 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.chat-input button:hover {
+  background: #0077a3;
+}
+
+.chat-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7f8c8d;
+}

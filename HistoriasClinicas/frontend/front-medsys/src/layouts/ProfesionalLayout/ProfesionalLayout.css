@@ -1,0 +1,144 @@
+.profesional-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fbfd;
+  font-family: "Inter", sans-serif;
+  color: #2c3e50;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  padding: 25px 20px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
+.sidebar-header {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0096c7;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #2c3e50;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-nav li:hover {
+  background: #90e0ef;
+  color: white;
+}
+
+/* Contenido principal */
+.main-content {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 15px 30px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar-left h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #0096c7;
+}
+
+.topbar-left p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.topbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  width: 65%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: #f4f7fa;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.notifications {
+  position: relative;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.notifications .badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #ef476f;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+.btn-secondary {
+  background: #48cae4;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #00b4d8;
+}
+
+/* Área de contenido */
+.content-area {
+  padding: 25px 30px;
+  flex: 1;
+}

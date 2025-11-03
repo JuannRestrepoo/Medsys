@@ -1,0 +1,71 @@
+.historias-container {
+  padding: 20px;
+}
+
+.historias-container h2 {
+  color: #0096c7;
+  margin-bottom: 5px;
+}
+
+.historias-container p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+/* Tabla */
+.historias-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.historias-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.historias-table th,
+.historias-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.historias-table th {
+  background: #f0f8fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Botones */
+.btn-view,
+.btn-edit {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-right: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-view {
+  background: #0096c7;
+  color: white;
+}
+
+.btn-view:hover {
+  background: #0077a3;
+}
+
+.btn-edit {
+  background: #f39c12;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #d68910;
+}
