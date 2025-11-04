@@ -1,9 +1,26 @@
+// src/layouts/PacienteLayout/PacienteLayout.jsx
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import "./PacienteLayout.css";
 
 function PacienteLayout() {
   const navigate = useNavigate();
+
+  // Cerrar sesión
+  const handleLogout = () => {
+    localStorage.removeItem("paciente");
+    navigate("/paciente/login", { replace: true });
+  };
+
+  // Leer sesión para mostrar nombre
+  const paciente = (() => {
+    try {
+      const raw = localStorage.getItem("paciente");
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  })();
 
   return (
     <div className="paciente-layout">
@@ -32,7 +49,7 @@ function PacienteLayout() {
         <header className="topbar">
           <div className="topbar-left">
             <h2>Portal del Paciente</h2>
-            <p>Bienvenido a tu espacio personal de salud</p>
+            <p>Bienvenido{paciente?.nombre ? `, ${paciente.nombre}` : ""} a tu espacio personal de salud</p>
           </div>
           <div className="topbar-center">
             <input
@@ -45,11 +62,11 @@ function PacienteLayout() {
             <div className="notifications">
               🔔 <span className="badge">2</span>
             </div>
-            <button
-              className="btn-secondary"
-              onClick={() => navigate("/paciente/perfil")}
-            >
+            <button className="btn-secondary" onClick={() => navigate("/paciente/perfil")}>
               Mi Perfil
+            </button>
+            <button className="btn-secondary" onClick={handleLogout} style={{ marginLeft: 8 }}>
+              Cerrar sesión
             </button>
           </div>
         </header>

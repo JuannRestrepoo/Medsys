@@ -1,3 +1,4 @@
+// src/routes/AppRouter.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -9,12 +10,8 @@ import Acceso from "../pages/Acceso/Acceso";
 import LoginCentro from "../pages/Login/Centro/LoginCentro";
 import LoginPaciente from "../pages/Login/Paciente/LoginPaciente";
 
-//Registrar
-
+// Registrar
 import RegistrarPaciente from "../pages/Register/Paciente/RegistrarPaciente";
-
-
-// Portal Paciente
 
 // Dashboard Profesional
 import ProfesionalLayout from "../layouts/ProfesionalLayout/ProfesionalLayout";
@@ -38,11 +35,8 @@ import MensajesPaciente from "../pages/Paciente/Mensajes/Mensajes";
 import PagosPaciente from "../pages/Paciente/Pagos/Pagos";
 import PerfilPaciente from "../pages/Paciente/Perfil/Perfil";
 
-
-// PROTECCION
-
+// Protección
 import RutaProtegidaPaciente from "../components/RutaProtegidaPaciente";
-
 
 function AppRouter() {
   return (
@@ -56,7 +50,7 @@ function AppRouter() {
         <Route path="/profesional/login" element={<LoginCentro />} />
         <Route path="/paciente/login" element={<LoginPaciente />} />
 
-        {/* Portal Paciente protegido */}
+        {/* Bloque protegido: todo /paciente/* requiere sesión */}
         <Route
           path="/paciente"
           element={
@@ -74,7 +68,7 @@ function AppRouter() {
           <Route path="pagos" element={<PagosPaciente />} />
           <Route path="perfil" element={<PerfilPaciente />} />
         </Route>
-        
+
         {/* Dashboard Profesional con layout */}
         <Route path="/profesional" element={<ProfesionalLayout />}>
           <Route path="dashboard" element={<DashboardProfesional />} />
@@ -87,6 +81,9 @@ function AppRouter() {
           <Route path="configuracion" element={<Configuracion />} />
           <Route path="pacientes/registrar" element={<RegistrarPaciente />} />
         </Route>
+
+        {/* Fallback: si no coincide ninguna ruta, envía al inicio */}
+        <Route path="*" element={<LandingPage />} />
       </Routes>
     </Router>
   );

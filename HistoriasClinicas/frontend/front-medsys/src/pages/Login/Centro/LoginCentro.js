@@ -11,7 +11,7 @@ function LoginCentro() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:7000/auth/login", {
+      const response = await fetch("http://127.0.0.1:7000/auth/login-profesional", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -23,8 +23,13 @@ function LoginCentro() {
       const data = await response.json();
 
       if (data.mensaje) {
-        // ✅ Guardar sesión en localStorage
-        localStorage.setItem("usuario", JSON.stringify(data));
+        // ✅ Guardar sesión en localStorage bajo la clave "profesional"
+        localStorage.setItem("profesional", JSON.stringify({
+          idusuario: data.idusuario,
+          idprofesional: data.idprofesional,
+          rol: data.rol,
+          nombre: data.nombre
+        }));
 
         // ✅ Redirigir al dashboard
         navigate("/profesional/dashboard");

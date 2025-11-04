@@ -114,3 +114,37 @@ class ProfesionalInfrastructure:
         finally:
             if conn:
                 conn.close()
+
+#perfil profesional
+    @staticmethod
+    def consultar_profesional_usuario(idusuario: str):
+        conn = None
+        try:
+            conn = psycopg2.connect(
+                dbname="dbaMedSys",
+                user="postgres",
+                password="",
+                host="127.0.0.1",
+                port="5432"
+            )
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute(
+                    '''
+                    SELECT u."Nombre_Completo",
+                           u."Correo",
+                           u."Telefono",
+                           p."Cargo"
+
+                    FROM "Usuario" u
+                    JOIN "Profesional" p ON u."IdUsuario" = p."IdUsuario"
+                    WHERE u."IdUsuario" = %s
+                    ''',
+                    (idusuario,)
+                )
+                result = cur.fetchone()
+                return result if result else {"mensaje": "Profesional no encontrado"}
+        except Exception as e:
+            return {"error": str(e)}
+        finally:
+            if conn:
+                conn.close()

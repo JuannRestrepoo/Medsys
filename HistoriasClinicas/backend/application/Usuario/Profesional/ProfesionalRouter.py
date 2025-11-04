@@ -3,6 +3,25 @@ from domain.Usuario.Profesional.ProfesionalModel import ProfesionalModel
 from infrastructure.Usuario.Profesional.ProfesionalInfrastructure import ProfesionalInfrastructure
 router = APIRouter(prefix="/profesional", tags=["Usuario.Profesional"])
 
+
+
+#ENDPOINT PERFIL PROFESIONAL
+
+@router.get(
+    "/consultar_profesional_usuario",
+    summary="Consultar Profesional con datos de Usuario",
+    description="Devuelve datos del profesional junto con los datos básicos del usuario",
+    tags=["Usuario.Profesional"]
+)
+async def consultar_profesional_usuario(idusuario: str):
+    return ProfesionalInfrastructure.consultar_profesional_usuario(idusuario)
+
+
+
+
+
+
+
 #Usuario.Profesional
 #GET
 @router.get(

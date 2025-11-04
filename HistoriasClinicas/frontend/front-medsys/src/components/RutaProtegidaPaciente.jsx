@@ -1,12 +1,24 @@
-
+// src/components/RutaProtegidaPaciente.jsx
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 function RutaProtegidaPaciente({ children }) {
-  const paciente = JSON.parse(localStorage.getItem("paciente") || "{}");
+  const location = useLocation();
 
-  if (!paciente.idusuario) {
-    return <Navigate to="/paciente/login" replace />;
+  // Leer sesión segura
+  let paciente = null;
+  try {
+    const raw = localStorage.getItem("paciente");
+    paciente = raw ? JSON.parse(raw) : null;
+  } catch {
+    paciente = null;
+  }
+
+  const isLoggedIn = Boolean(paciente && paciente.idusuario);
+
+  if (!isLoggedIn) {
+    // Redirige al login y recuerda la ruta que intentaba acceder
+    return <Navigate to="/paciente/login" replace state={{ from: location }} />;
   }
 
   return children;

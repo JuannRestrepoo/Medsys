@@ -5,6 +5,15 @@ import "./ProfesionalLayout.css";
 function ProfesionalLayout() {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    // Limpia la sesión del profesional
+    localStorage.removeItem("profesional");
+    // Si también quieres limpiar pacientes por seguridad:
+    localStorage.removeItem("paciente");
+    // Redirige al login general o al de profesional
+    navigate("/profesional/login");
+  };
+
   return (
     <div className="profesional-layout">
       {/* Sidebar */}
@@ -42,16 +51,25 @@ function ProfesionalLayout() {
             />
           </div>
           <div className="topbar-right">
-            <button className="btn-primary" onClick={() => navigate("/profesional/pacientes/registrar")}>
-                + Registrar Paciente
+            <button
+              className="btn-primary"
+              onClick={() => navigate("/profesional/pacientes/registrar")}
+            >
+              + Registrar Paciente
             </button>
             <div className="notifications">
-                🔔 <span className="badge">3</span>
+              🔔 <span className="badge">3</span>
             </div>
-            <button className="btn-secondary" onClick={() => navigate("/profesional/configuracion")}>
-                Perfil
+            <button
+              className="btn-secondary"
+              onClick={() => navigate("/profesional/configuracion")}
+            >
+              Perfil
             </button>
-            </div>
+            <button className="btn-logout" onClick={handleLogout}>
+              🚪 Cerrar sesión
+            </button>
+          </div>
         </header>
 
         {/* Aquí se renderiza el contenido de cada módulo */}

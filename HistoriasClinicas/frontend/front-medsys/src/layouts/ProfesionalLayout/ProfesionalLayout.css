@@ -137,6 +137,22 @@
   background: #00b4d8;
 }
 
+/* Botón de cerrar sesión */
+.btn-logout {
+  background: #ef476f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: #d62839;
+}
+
 /* Área de contenido */
 .content-area {
   padding: 25px 30px;
