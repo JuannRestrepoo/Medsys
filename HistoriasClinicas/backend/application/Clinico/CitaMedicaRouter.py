@@ -3,6 +3,30 @@ from domain.Clinico.CitaMedica.CitaMedicaModel import  CitaMedicaModel
 from infrastructure.Clinico.CitaMedica.CitaMedicaInfrastructure import CitaMedicaInfrastructure
 
 router = APIRouter(prefix="/citamedica", tags=["Clinico.CitaMedica"])
+
+#MOSTRAR CITASMEDICAS PENDIENTES DEL PROFESIONAL
+@router.get(
+    "/pendientes",
+    summary="Listar citas médicas pendientes",
+    description="Obtiene todas las citas médicas con estado Pendiente",
+    tags=["Clinico.CitaMedica"]
+)
+async def listar_citas_pendientes():
+    return CitaMedicaInfrastructure.listar_citas_pendientes()
+
+
+
+#MOSTRAR CITAS POR DOCUMENTO DEL PACIENTE
+
+@router.get(
+    "/paciente/{documento}",
+    summary="Listar citas por documento del paciente",
+    description="Devuelve todas las citas asociadas al documento del paciente",
+    tags=["Clinico.CitaMedica"]
+)
+async def listar_citas_por_documento(documento: str):
+    return CitaMedicaInfrastructure.listar_citas_por_documento(documento)
+
 #Clinico.CitaMedica
 #GET
 @router.get(

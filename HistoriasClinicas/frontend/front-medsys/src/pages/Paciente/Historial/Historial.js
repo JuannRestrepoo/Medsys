@@ -1,84 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Historial.css";
 
-function HistorialPaciente() {
-  const [consultas] = useState([
-    {
-      id: 1,
-      fecha: "20/10/2025",
-      profesional: "Dr. Juan Pérez",
-      especialidad: "Medicina General",
-      diagnostico: "Hipertensión",
-      tratamiento: "Enalapril 10mg cada 12h",
-      notas: "Se recomienda control de presión arterial semanal."
-    },
-    {
-      id: 2,
-      fecha: "05/09/2025",
-      profesional: "Dra. María López",
-      especialidad: "Dermatología",
-      diagnostico: "Dermatitis atópica",
-      tratamiento: "Crema hidratante + antihistamínico",
-      notas: "Evitar exposición prolongada al sol."
-    },
-    {
-      id: 3,
-      fecha: "15/07/2025",
-      profesional: "Dr. Carlos Gómez",
-      especialidad: "Psicología",
-      diagnostico: "Ansiedad leve",
-      tratamiento: "Terapia cognitivo-conductual",
-      notas: "Asistir a sesiones semanales."
-    }
-  ]);
-
+function HistoriaClinicaPaciente() {
+  const paciente = JSON.parse(localStorage.getItem("paciente"));
+  const [consultas, setConsultas] = useState([]);
   const [seleccionada, setSeleccionada] = useState(null);
+
+  useEffect(() => {
+    const fetchHistorias = async () => {
+      if (!paciente || !paciente.documento) return;
+
+      try {
+        const res = await fetch(`http://127.0.0.1:7000/historiaclinica/paciente/${paciente.documento}`);
+        if (!res.ok) throw new Error("Error al obtener historias clínicas");
+        const data = await res.json();
+        setConsultas(data);
+      } catch (err) {
+        console.error("Error cargando historias clínicas:", err);
+      }
+    };
+
+    fetchHistorias();
+  }, [paciente]);
 
   return (
     <div className="historial-container">
-      <h2>🧾 Historial Médico</h2>
-      <p>Consulta tus antecedentes clínicos y detalles de cada cita.</p>
+      <h2>🧾 Historia Clínica</h2>
+      <p>Consulta tu historia clínica y detalles de cada registro.</p>
 
       {/* Resumen */}
       <div className="historial-summary">
         <div className="summary-card">
           <h3>{consultas.length}</h3>
-          <p>Consultas registradas</p>
+          <p>Registros en tu historia clínica</p>
         </div>
         <div className="summary-card">
-          <h3>{new Set(consultas.map(c => c.especialidad)).size}</h3>
-          <p>Especialidades atendidas</p>
-        </div>
-        <div className="summary-card">
-          <h3>{new Set(consultas.map(c => c.diagnostico)).size}</h3>
-          <p>Diagnósticos distintos</p>
+          <h3>{new Set(consultas.map(c => c.cargo)).size}</h3>
+          <p>Cargos atendidos</p>
         </div>
       </div>
 
-      {/* Tabla de consultas */}
+      {/* Tabla de historias clínicas */}
       <div className="historial-table-container">
         <table className="historial-table">
           <thead>
             <tr>
               <th>Fecha</th>
               <th>Profesional</th>
-              <th>Especialidad</th>
-              <th>Diagnóstico</th>
+              <th>Cargo</th>
+              <th>Antecedentes</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {consultas.map((c) => (
-              <tr key={c.id}>
+              <tr key={c.idhistoria}>
                 <td>{c.fecha}</td>
-                <td>{c.profesional}</td>
-                <td>{c.especialidad}</td>
-                <td>{c.diagnostico}</td>
+                <td>{c.nombre_profesional}</td>
+                <td>{c.cargo}</td>
+                <td>{c.antecedentes}</td>
                 <td>
-                  <button
-                    className="btn-detalle"
-                    onClick={() => setSeleccionada(c)}
-                  >
+                  <button className="btn-detalle" onClick={() => setSeleccionada(c)}>
                     Ver Detalle
                   </button>
                 </td>
@@ -88,16 +70,15 @@ function HistorialPaciente() {
         </table>
       </div>
 
-      {/* Detalle de consulta */}
+      {/* Detalle de historia clínica */}
       {seleccionada && (
         <div className="detalle-consulta">
-          <h3>📋 Detalle de la consulta</h3>
+          <h3>📋 Detalle de la historia clínica</h3>
           <p><strong>Fecha:</strong> {seleccionada.fecha}</p>
-          <p><strong>Profesional:</strong> {seleccionada.profesional}</p>
-          <p><strong>Especialidad:</strong> {seleccionada.especialidad}</p>
-          <p><strong>Diagnóstico:</strong> {seleccionada.diagnostico}</p>
-          <p><strong>Tratamiento:</strong> {seleccionada.tratamiento}</p>
-          <p><strong>Notas:</strong> {seleccionada.notas}</p>
+          <p><strong>Profesional:</strong> {seleccionada.nombre_profesional}</p>
+          <p><strong>Cargo:</strong> {seleccionada.cargo}</p>
+          <p><strong>Antecedentes:</strong> {seleccionada.antecedentes}</p>
+          <p><strong>Observaciones:</strong> {seleccionada.observaciones}</p>
           <button className="btn-cerrar" onClick={() => setSeleccionada(null)}>
             Cerrar
           </button>
@@ -107,4 +88,4 @@ function HistorialPaciente() {
   );
 }
 
-export default HistorialPaciente;
+export default HistoriaClinicaPaciente;

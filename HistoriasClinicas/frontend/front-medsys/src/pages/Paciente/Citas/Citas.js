@@ -1,141 +1,127 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Citas.css";
 
 function CitasPaciente() {
-  const [citas, setCitas] = useState([
-    { id: 1, fecha: "05/11/2025", hora: "10:00 AM", profesional: "Dr. Juan Pérez", estado: "Confirmada" },
-    { id: 2, fecha: "10/11/2025", hora: "02:00 PM", profesional: "Dra. María López", estado: "Pendiente" },
-    { id: 3, fecha: "20/10/2025", hora: "09:00 AM", profesional: "Dr. Carlos Gómez", estado: "Completada" },
-  ]);
+  const paciente = JSON.parse(localStorage.getItem("paciente"));
+  console.log("Paciente desde localStorage:", paciente);
 
-  // Lista de profesionales disponibles en el consultorio
-  const profesionales = ["Dr. Juan Pérez", "Dra. María López", "Dr. Carlos Gómez"];
+  const [citas, setCitas] = useState([]);
+  const [citaActual, setCitaActual] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const [nuevaCita, setNuevaCita] = useState({
-    fecha: "",
-    hora: "",
-    profesional: "",
-  });
+  // 🔹 Cargar todas las citas del paciente
+  useEffect(() => {
+    const fetchCitasPaciente = async () => {
+      if (!paciente || !paciente.documento) {
+        console.warn("Paciente no válido o sin documento.");
+        return;
+      }
 
-  const handleChange = (e) => {
-    setNuevaCita({ ...nuevaCita, [e.target.name]: e.target.value });
-  };
+      try {
+        const res = await fetch(`http://127.0.0.1:7000/citamedica/paciente/${paciente.documento}`);
+        const raw = await res.text();
+        console.log("Respuesta cruda del backend:", raw);
 
-  const handleAgendar = (e) => {
-    e.preventDefault();
-    if (!nuevaCita.fecha || !nuevaCita.hora || !nuevaCita.profesional) return;
+        if (!res.ok) throw new Error("Error al obtener citas del paciente");
 
-    let profesionalAsignado = nuevaCita.profesional;
-
-    // Si elige "aleatorio", asignamos un profesional al azar
-    if (profesionalAsignado === "aleatorio") {
-      const randomIndex = Math.floor(Math.random() * profesionales.length);
-      profesionalAsignado = profesionales[randomIndex];
-    }
-
-    const nueva = {
-      id: citas.length + 1,
-      fecha: nuevaCita.fecha,
-      hora: nuevaCita.hora,
-      profesional: profesionalAsignado,
-      estado: "Pendiente",
+        const data = JSON.parse(raw);
+        console.log("Citas recibidas:", data);
+        setCitas(data);
+      } catch (err) {
+        console.error("Error cargando citas del paciente:", err);
+      }
     };
 
-    setCitas([...citas, nueva]);
-    setNuevaCita({ fecha: "", hora: "", profesional: "" });
-    alert(`✅ Cita solicitada con ${profesionalAsignado}`);
-  };
+    fetchCitasPaciente();
+  }, [paciente]);
+
+  // 🔹 Seleccionar la cita pendiente más próxima
+  useEffect(() => {
+    if (!citas || citas.length === 0) {
+      console.warn("No hay citas cargadas.");
+      return;
+    }
+
+    const hoy = new Date();
+    const pendientesFuturas = citas
+      .filter(c => c.estado?.toLowerCase() === "pendiente")
+      .filter(c => {
+        const fechaCita = new Date(c.fecha);
+        console.log(`Evaluando cita: ${c.idcita} → ${c.fecha} → ${fechaCita}`);
+        return fechaCita >= hoy;
+      })
+      .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+
+    console.log("Citas pendientes futuras:", pendientesFuturas);
+
+    if (pendientesFuturas.length > 0) {
+      setCitaActual(pendientesFuturas[0]);
+    } else {
+      setCitaActual(null);
+    }
+  }, [citas]);
+
+  if (loading) return <p>Cargando citas...</p>;
+
+  const citasPasadas = citas.filter(c => c.estado === "Completada" || c.estado === "Confirmada");
 
   return (
     <div className="citas-paciente-container">
-      <h2>📅 Mis Citas</h2>
-      <p>Consulta tus citas médicas, agenda nuevas y revisa el estado de cada una.</p>
+      <h2>📅 Módulo de Citas</h2>
 
-      {/* Resumen */}
-      <div className="citas-summary">
-        <div className="summary-card">
-          <h3>{citas.filter(c => c.estado === "Pendiente").length}</h3>
-          <p>Pendientes</p>
-        </div>
-        <div className="summary-card">
-          <h3>{citas.filter(c => c.estado === "Confirmada").length}</h3>
-          <p>Confirmadas</p>
-        </div>
-        <div className="summary-card">
-          <h3>{citas.filter(c => c.estado === "Completada").length}</h3>
-          <p>Completadas</p>
-        </div>
+      {/* Cita actual */}
+      <div className="cita-actual">
+        <h3>📌 Próxima Cita</h3>
+        {citaActual ? (
+          <div className="cita-detalle">
+            <p><strong>Fecha:</strong> {citaActual.fecha}</p>
+            <p><strong>Hora:</strong> {citaActual.hora}</p>
+            <p><strong>Profesional:</strong> {citaActual.nombre_profesional || citaActual.idprofesional}</p>
+            <p><strong>Estado:</strong> {citaActual.estado}</p>
+            <p><strong>Dirección:</strong> {citaActual.direccion_centro}</p>
+            <p><strong>Ciudad:</strong> {citaActual.ciudad_centro}</p>
+
+            {/* Botón para cancelar cita */}
+            <button className="btn-cancelar" onClick={() => alert("Funcionalidad pendiente")}>
+               Cancelar cita
+            </button>
+          </div>
+        ) : (
+          <p>No tienes citas futuras pendientes.</p>
+        )}
       </div>
 
-      {/* Tabla */}
-      <div className="citas-table-container">
-        <table className="citas-table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Hora</th>
-              <th>Profesional</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {citas.map((c) => (
-              <tr key={c.id}>
-                <td>{c.fecha}</td>
-                <td>{c.hora}</td>
-                <td>{c.profesional}</td>
-                <td>
-                  <span className={`status ${c.estado.toLowerCase()}`}>
-                    {c.estado}
-                  </span>
-                </td>
+      {/* Historial de citas */}
+      <div className="citas-pasadas">
+        <h3>📖 Historial de Citas</h3>
+        {citasPasadas.length === 0 ? (
+          <p>No tienes citas pasadas.</p>
+        ) : (
+          <table className="citas-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Profesional</th>
+                <th>Estado</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Formulario */}
-      <div className="citas-form-container">
-        <h3>➕ Agendar nueva cita</h3>
-        <form className="citas-form" onSubmit={handleAgendar}>
-          <div className="form-group">
-            <label>Fecha</label>
-            <input
-              type="date"
-              name="fecha"
-              value={nuevaCita.fecha}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Hora</label>
-            <input
-              type="time"
-              name="hora"
-              value={nuevaCita.hora}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Profesional</label>
-            <select
-              name="profesional"
-              value={nuevaCita.profesional}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccione...</option>
-              <option value="aleatorio">Asignar Aleatoriamente</option>
-              {profesionales.map((p, i) => (
-                <option key={i} value={p}>{p}</option>
+            </thead>
+            <tbody>
+              {citasPasadas.map((c) => (
+                <tr key={c.idcita}>
+                  <td>{c.fecha}</td>
+                  <td>{c.hora}</td>
+                  <td>{c.nombre_profesional || c.idprofesional}</td>
+                  <td>
+                    <span className={`status ${c.estado?.toLowerCase()}`}>
+                      {c.estado}
+                    </span>
+                  </td>
+                </tr>
               ))}
-            </select>
-          </div>
-          <button type="submit" className="btn-agendar">Agendar Cita</button>
-        </form>
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

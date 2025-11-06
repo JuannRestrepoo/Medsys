@@ -2,6 +2,7 @@ import psycopg2
 import psycopg2.extras
 from domain.Usuario.Profesional.ProfesionalModel import ProfesionalModel
 
+
 class ProfesionalInfrastructure:
 
     @staticmethod
@@ -143,6 +144,77 @@ class ProfesionalInfrastructure:
                 )
                 result = cur.fetchone()
                 return result if result else {"mensaje": "Profesional no encontrado"}
+        except Exception as e:
+            return {"error": str(e)}
+        finally:
+            if conn:
+                conn.close()
+
+
+#LISTAR PROFESIONALES DE UN CENTRO
+
+    @staticmethod
+    def listar_profesionales_centro(idcentro: str):
+        conn = None
+        try:
+            conn = psycopg2.connect(
+                dbname="dbaMedSys",
+                user="postgres",
+                password="",
+                host="127.0.0.1",
+                port="5432"
+            )
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute(
+                    '''
+                    SELECT pr."IdProfesional",
+                    u."Nombre_Completo"
+                    FROM "Profesional" pr
+                    JOIN "Usuario" u ON pr."IdUsuario" = u."IdUsuario"
+                    JOIN "Centro" c ON pr."IdCentro" = c."IdCentro"
+                    WHERE c."IdCentro" = %s;
+                    ''',
+                    (idcentro,)
+                )
+                result = cur.fetchall()
+                return result if result else {"mensaje": "No hay profesionales en este centro"}
+        except Exception as e:
+            return {"error": str(e)}
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def listar_profesionales_para_paciente(idusuario: str):
+        conn = None
+        try:
+            conn = psycopg2.connect(
+                dbname="dbaMedSys",
+                user="postgres",
+                password="",
+                host="127.0.0.1",
+                port="5432"
+            )
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute(
+                    '''
+                    SELECT pr."IdProfesional",
+                           u."Nombre_Completo"
+                    FROM "Profesional" pr
+                    JOIN "Usuario" u ON pr."IdUsuario" = u."IdUsuario"
+                    WHERE pr."IdCentro" = (
+                        SELECT pr2."IdCentro"
+                        FROM "Paciente" pa
+                        JOIN "Usuario" us ON pa."IdUsuario" = us."IdUsuario"
+                        JOIN "Profesional" pr2 ON pr2."IdCentro" = pa."IdCentro"
+                        WHERE pa."IdUsuario" = %s
+                        LIMIT 1
+                    )
+                    ''',
+                    (idusuario,)
+                )
+                result = cur.fetchall()
+                return result if result else {"mensaje": "No hay profesionales en el centro del paciente"}
         except Exception as e:
             return {"error": str(e)}
         finally:

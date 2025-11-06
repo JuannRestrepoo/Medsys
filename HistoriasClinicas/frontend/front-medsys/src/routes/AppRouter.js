@@ -24,7 +24,7 @@ import Mensajes from "../pages/Profesional/Mensajes/Mensajes";
 import Pagos from "../pages/Profesional/Pagos/Pagos";
 import Configuracion from "../pages/Profesional/Configuracion/Configuracion";
 
-// Portal Paciente y módulos
+// Portal Paciente y módulos (solo consulta)
 import PacienteLayout from "../layouts/PacienteLayout/PacienteLayout";
 import PortalPaciente from "../pages/PortalPaciente/PortalPaciente";
 import CitasPaciente from "../pages/Paciente/Citas/Citas";
@@ -37,6 +37,7 @@ import PerfilPaciente from "../pages/Paciente/Perfil/Perfil";
 
 // Protección
 import RutaProtegidaPaciente from "../components/RutaProtegidaPaciente";
+import RutaProtegidaProfesional from "../components/RutaProtegidaProfesional";
 
 function AppRouter() {
   return (
@@ -69,10 +70,17 @@ function AppRouter() {
           <Route path="perfil" element={<PerfilPaciente />} />
         </Route>
 
-        {/* Dashboard Profesional con layout */}
-        <Route path="/profesional" element={<ProfesionalLayout />}>
+        {/* Bloque protegido: todo /profesional/* requiere sesión */}
+        <Route
+          path="/profesional"
+          element={
+            <RutaProtegidaProfesional>
+              <ProfesionalLayout />
+            </RutaProtegidaProfesional>
+          }
+        >
           <Route path="dashboard" element={<DashboardProfesional />} />
-          <Route path="citas" element={<Citas />} />
+          <Route path="citas" element={<Citas />} /> {/* 🔹 Aquí agenda el profesional */}
           <Route path="historias" element={<Historias />} />
           <Route path="recetas" element={<Recetas />} />
           <Route path="resultados" element={<Resultados />} />
@@ -82,7 +90,7 @@ function AppRouter() {
           <Route path="pacientes/registrar" element={<RegistrarPaciente />} />
         </Route>
 
-        {/* Fallback: si no coincide ninguna ruta, envía al inicio */}
+        {/* Fallback */}
         <Route path="*" element={<LandingPage />} />
       </Routes>
     </Router>

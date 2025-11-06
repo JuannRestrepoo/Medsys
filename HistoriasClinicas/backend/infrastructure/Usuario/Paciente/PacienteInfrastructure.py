@@ -4,6 +4,43 @@ from domain.Usuario.Paciente.PacienteModel import PacienteModel
 
 class PacienteInfrastructure:
 
+
+
+# perfil paciente
+    @staticmethod
+    def consultar_paciente_usuario(idusuario: str):
+        conn = None
+        try:
+            conn = psycopg2.connect(
+                dbname="dbaMedSys",
+                user="postgres",
+                password="",
+                host="127.0.0.1",
+                port="5432"
+            )
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute(
+                    '''
+                    SELECT u."Nombre_Completo",
+                        u."Correo",
+                        u."Numero_Documento",
+                        u."Direccion",
+                        u."Telefono",
+                        p."Edad"
+                    FROM "Usuario" u
+                    JOIN "Paciente" p ON u."IdUsuario" = p."IdUsuario"
+                    WHERE u."IdUsuario" = %s
+                    ''',
+                    (idusuario,)
+                )
+                result = cur.fetchone()
+                return result if result else {"mensaje": "Paciente no encontrado"}
+        except Exception as e:
+            return {"error": str(e)}
+        finally:
+            if conn:
+                conn.close()
+
     @staticmethod
     def ingresar_paciente(paciente: PacienteModel):
         try:
@@ -81,3 +118,38 @@ class PacienteInfrastructure:
             return {"error": str(e)}
         finally:
             if conn: conn.close()
+
+
+    @staticmethod
+    def obtener_paciente_por_documento(documento: str):
+        conn = None
+        try:
+            conn = psycopg2.connect(
+                dbname="dbaMedSys",
+                user="postgres",
+                password="",
+                host="127.0.0.1",
+                port="5432"
+            )
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute(
+                    '''
+                    SELECT pa."IdPaciente",
+                           u."IdUsuario",
+                           u."Numero_Documento",
+                           u."Nombre_Completo"
+                    FROM "Paciente" pa
+                    JOIN "Usuario" u ON pa."IdUsuario" = u."IdUsuario"
+                    WHERE u."Numero_Documento" = %s
+                    ''',
+                    (documento,)
+                )
+                result = cur.fetchone()
+                if result:
+                    return result
+                return {"error": "Paciente no encontrado"}
+        except Exception as e:
+            return {"error": str(e)}
+        finally:
+            if conn:
+                conn.close()

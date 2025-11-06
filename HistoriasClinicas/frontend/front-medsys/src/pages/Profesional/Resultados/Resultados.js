@@ -1,32 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Resultados.css";
 
 function Resultados() {
-  const [resultados, setResultados] = useState([
-    { id: 1, paciente: "Juan Restrepo", tipo: "Examen de sangre", fecha: "01/11/2025", archivo: "examen-sangre.pdf" },
-    { id: 2, paciente: "María López", tipo: "Radiografía", fecha: "28/10/2025", archivo: "radiografia.jpg" },
-  ]);
+  const profesional = JSON.parse(localStorage.getItem("profesional"));
+  const [resultados, setResultados] = useState([]);
+  const [form, setForm] = useState({
+    documento: "",
+    titulo: "",
+    descripcion: "",
+    archivo: null,
+  });
+  const [mensaje, setMensaje] = useState("");
+  const [error, setError] = useState("");
 
-  const [nuevoPaciente, setNuevoPaciente] = useState("");
-  const [nuevoTipo, setNuevoTipo] = useState("");
-  const [nuevoArchivo, setNuevoArchivo] = useState(null);
-
-  const handleSubirResultado = (e) => {
-    e.preventDefault();
-    if (!nuevoPaciente || !nuevoTipo || !nuevoArchivo) return;
-
-    const nuevo = {
-      id: resultados.length + 1,
-      paciente: nuevoPaciente,
-      tipo: nuevoTipo,
-      fecha: new Date().toLocaleDateString(),
-      archivo: nuevoArchivo.name,
+  useEffect(() => {
+    const fetchResultados = async () => {
+      if (!form.documento) return;
+      try {
+        const res = await fetch(`http://127.0.0.1:7000/resultados/paciente/${form.documento}`);
+        if (!res.ok) throw new Error("Error al obtener resultados");
+        const data = await res.json();
+        setResultados(data);
+      } catch (err) {
+        console.error("Error cargando resultados:", err);
+      }
     };
+    fetchResultados();
+  }, [form.documento]);
 
-    setResultados([...resultados, nuevo]);
-    setNuevoPaciente("");
-    setNuevoTipo("");
-    setNuevoArchivo(null);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setForm({ ...form, archivo: e.target.files[0] });
+  };
+
+  const handleSubirResultado = async (e) => {
+    e.preventDefault();
+    try {
+      // 1. Subir archivo al backend
+      let nombreArchivo = null;
+      if (form.archivo) {
+        const formData = new FormData();
+        formData.append("file", form.archivo);
+
+        const resArchivo = await fetch("http://127.0.0.1:7000/resultados/subir-archivo", {
+          method: "POST",
+          body: formData,
+        });
+        if (!resArchivo.ok) throw new Error("Error al subir archivo");
+        const dataArchivo = await resArchivo.json();
+        nombreArchivo = dataArchivo.archivo;
+      }
+
+      // 2. Buscar paciente por documento
+      const resPaciente = await fetch(`http://127.0.0.1:7000/paciente/documento/${form.documento}`);
+      if (!resPaciente.ok) throw new Error("Paciente no encontrado");
+      const paciente = await resPaciente.json();
+
+      // 3. Construir payload resultado
+      const resultadoPayload = {
+        idresultado: crypto.randomUUID(),
+        idpaciente: paciente.IdPaciente,
+        idprofesional: profesional.idprofesional,
+        titulo: form.titulo,
+        descripcion: form.descripcion,
+        archivo: nombreArchivo,
+        activo: true,
+      };
+
+      // 4. Registrar resultado en la BD
+      const res = await fetch("http://127.0.0.1:7000/resultados/registrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(resultadoPayload),
+      });
+
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || JSON.stringify(data.detail));
+      }
+
+      setMensaje("✅ Resultado registrado con éxito");
+      setError("");
+      setForm({ documento: "", titulo: "", descripcion: "", archivo: null });
+
+      // Refrescar lista
+      setResultados((prev) => [...prev, resultadoPayload]);
+    } catch (err) {
+      console.error(err);
+      setError("❌ No se pudo registrar el resultado: " + err.message);
+      setMensaje("");
+    }
   };
 
   return (
@@ -34,58 +101,81 @@ function Resultados() {
       <h2>📂 Resultados y Documentos</h2>
       <p>Sube y consulta los resultados médicos de tus pacientes.</p>
 
-      {/* Formulario para subir resultado */}
+      {/* Formulario */}
       <form className="resultado-form" onSubmit={handleSubirResultado}>
         <div className="form-group">
-          <label>Paciente</label>
+          <label>Documento del Paciente</label>
           <input
             type="text"
-            value={nuevoPaciente}
-            onChange={(e) => setNuevoPaciente(e.target.value)}
-            placeholder="Nombre del paciente"
+            name="documento"
+            value={form.documento}
+            onChange={handleChange}
+            placeholder="Número de documento"
+            required
           />
         </div>
         <div className="form-group">
-          <label>Tipo de resultado</label>
+          <label>Título del resultado</label>
           <input
             type="text"
-            value={nuevoTipo}
-            onChange={(e) => setNuevoTipo(e.target.value)}
-            placeholder="Ej: Resonancia, Examen de sangre..."
+            name="titulo"
+            value={form.titulo}
+            onChange={handleChange}
+            placeholder="Ej: Examen de sangre"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Descripción</label>
+          <textarea
+            name="descripcion"
+            value={form.descripcion}
+            onChange={handleChange}
+            placeholder="Detalles del resultado"
           />
         </div>
         <div className="form-group">
           <label>Archivo</label>
-          <input
-            type="file"
-            onChange={(e) => setNuevoArchivo(e.target.files[0])}
-          />
+          <input type="file" onChange={handleFileChange} />
         </div>
         <button type="submit" className="btn-upload">📤 Subir Resultado</button>
       </form>
 
-      {/* Tabla de resultados */}
+      {/* Mensajes */}
+      {mensaje && <p className="mensaje-exito">{mensaje}</p>}
+      {error && <p className="mensaje-error">{error}</p>}
+
+      {/* Tabla */}
       <div className="resultados-table-container">
         <table className="resultados-table">
           <thead>
             <tr>
-              <th>Paciente</th>
-              <th>Tipo</th>
-              <th>Fecha</th>
+              <th>Título</th>
+              <th>Descripción</th>
               <th>Archivo</th>
-              <th>Acciones</th>
+              <th>Profesional</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
             {resultados.map((r) => (
-              <tr key={r.id}>
-                <td>{r.paciente}</td>
-                <td>{r.tipo}</td>
-                <td>{r.fecha}</td>
-                <td>{r.archivo}</td>
+              <tr key={r.idresultado}>
+                <td>{r.titulo}</td>
+                <td>{r.descripcion}</td>
                 <td>
-                  <button className="btn-view">Ver</button>
-                  <button className="btn-delete">Eliminar</button>
+                  {r.archivo ? (
+                    <a href={`http://127.0.0.1:7000/uploads/${r.archivo}`} target="_blank" rel="noopener noreferrer">
+                      {r.archivo}
+                    </a>
+                  ) : (
+                    "Sin archivo"
+                  )}
+                </td>
+                <td>{r.nombre_profesional}</td>
+                <td>
+                  <span className={`status ${r.activo ? "activo" : "inactivo"}`}>
+                    {r.activo ? "Activo" : "Inactivo"}
+                  </span>
                 </td>
               </tr>
             ))}

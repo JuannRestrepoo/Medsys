@@ -1,92 +1,55 @@
-import React, { useState } from "react";
+// src/pages/Paciente/Perfil/PerfilPaciente.jsx
+import React, { useEffect, useState } from "react";
 import "./Perfil.css";
 
+
 function PerfilPaciente() {
-  const [perfil, setPerfil] = useState({
-    nombre: "Ana Gómez",
-    documento: "12345678",
-    edad: 32,
-    genero: "Femenino",
-    telefono: "3001234567",
-    correo: "ana.gomez@correo.com",
-    direccion: "Calle 123 #45-67",
-    eps: "Salud Total",
-  });
+  const [perfil, setPerfil] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [editando, setEditando] = useState(false);
+  useEffect(() => {
+    // Leer sesión del paciente desde localStorage
+    const raw = localStorage.getItem("paciente");
+    const paciente = raw ? JSON.parse(raw) : null;
 
-  const handleChange = (e) => {
-    setPerfil({ ...perfil, [e.target.name]: e.target.value });
-  };
+    if (!paciente || !paciente.idusuario) {
+      setLoading(false);
+      return;
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setEditando(false);
-    alert("✅ Perfil actualizado correctamente");
-    // Aquí luego harías un PUT al backend con axios/fetch
-  };
+    // Llamada al backend para traer datos del paciente
+    const fetchPerfil = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:7000/paciente/consultar_paciente_usuario?idusuario=${paciente.idusuario}`
+        );
+        const data = await response.json();
+        console.log("Perfil recibido desde backend:", data);
+        setPerfil(data);
+      } catch (error) {
+        console.error("Error cargando perfil del paciente:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPerfil();
+  }, []);
+
+  if (loading) return <p>Cargando perfil...</p>;
+  if (!perfil) return <p>No se encontró información del paciente.</p>;
 
   return (
-    <div className="perfil-container">
-      <h2>⚙️ Mi Perfil</h2>
-      <p>Consulta y actualiza tu información personal.</p>
-
-      {!editando ? (
-        <div className="perfil-info">
-          <p><strong>Nombre:</strong> {perfil.nombre}</p>
-          <p><strong>Documento:</strong> {perfil.documento}</p>
-          <p><strong>Edad:</strong> {perfil.edad}</p>
-          <p><strong>Género:</strong> {perfil.genero}</p>
-          <p><strong>Teléfono:</strong> {perfil.telefono}</p>
-          <p><strong>Correo:</strong> {perfil.correo}</p>
-          <p><strong>Dirección:</strong> {perfil.direccion}</p>
-          <p><strong>EPS:</strong> {perfil.eps}</p>
-          <button className="btn-edit" onClick={() => setEditando(true)}>
-            Editar Perfil
-          </button>
-        </div>
-      ) : (
-        <form className="perfil-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nombre</label>
-            <input type="text" name="nombre" value={perfil.nombre} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Documento</label>
-            <input type="text" name="documento" value={perfil.documento} onChange={handleChange} disabled />
-          </div>
-          <div className="form-group">
-            <label>Edad</label>
-            <input type="number" name="edad" value={perfil.edad} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Género</label>
-            <select name="genero" value={perfil.genero} onChange={handleChange}>
-              <option value="Femenino">Femenino</option>
-              <option value="Masculino">Masculino</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Teléfono</label>
-            <input type="text" name="telefono" value={perfil.telefono} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Correo</label>
-            <input type="email" name="correo" value={perfil.correo} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Dirección</label>
-            <input type="text" name="direccion" value={perfil.direccion} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>EPS</label>
-            <input type="text" name="eps" value={perfil.eps} onChange={handleChange} />
-          </div>
-          <button type="submit" className="btn-save">Guardar Cambios</button>
-          <button type="button" className="btn-cancel" onClick={() => setEditando(false)}>Cancelar</button>
-        </form>
-      )}
+    <div className="perfil-paciente">
+      <h2 className="perfil-titulo">Perfil del Paciente</h2>
+      <div className="perfil-datos">
+        <p><strong>Nombre:</strong> {perfil.Nombre_Completo}</p>
+        <p><strong>Correo:</strong> {perfil.Correo}</p>
+        <p><strong>Número de documento:</strong> {perfil.Numero_Documento}</p>
+        <p><strong>Dirección:</strong> {perfil.Direccion}</p>
+        <p><strong>Teléfono:</strong> {perfil.Telefono}</p>
+        <p><strong>Edad:</strong> {perfil.Edad}</p>
+      </div>
     </div>
   );
 }

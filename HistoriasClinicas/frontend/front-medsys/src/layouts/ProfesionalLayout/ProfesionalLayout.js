@@ -6,11 +6,8 @@ function ProfesionalLayout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Limpia la sesión del profesional
     localStorage.removeItem("profesional");
-    // Si también quieres limpiar pacientes por seguridad:
     localStorage.removeItem("paciente");
-    // Redirige al login general o al de profesional
     navigate("/profesional/login");
   };
 
@@ -24,7 +21,7 @@ function ProfesionalLayout() {
         <nav className="sidebar-nav">
           <ul>
             <li onClick={() => navigate("/profesional/dashboard")}>🏠 Dashboard</li>
-            <li onClick={() => navigate("/profesional/citas")}>📅 Citas</li>
+            <li onClick={() => navigate("/profesional/citas")}>➕ Citas</li>
             <li onClick={() => navigate("/profesional/historias")}>🧾 Historias Clínicas</li>
             <li onClick={() => navigate("/profesional/recetas")}>💊 Recetas</li>
             <li onClick={() => navigate("/profesional/resultados")}>📂 Resultados</li>
@@ -56,6 +53,12 @@ function ProfesionalLayout() {
               onClick={() => navigate("/profesional/pacientes/registrar")}
             >
               + Registrar Paciente
+            </button>
+            <button
+              className="btn-secondary"
+              onClick={() => navigate("/profesional/citas")}
+            >
+              ➕ Agendar Cita
             </button>
             <div className="notifications">
               🔔 <span className="badge">3</span>

@@ -1,0 +1,8 @@
+FACTURA
+Paciente: 123
+Documento: 123
+Servicio: Consulta Dermatologica
+Fecha: 2025-11-06
+Monto: 214.0
+Profesional: Monica Gallego Ramirez
+Centro: Juan Estetica - Calle 32B - Medellin - 312647694

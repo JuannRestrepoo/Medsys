@@ -13,3 +13,4 @@ class UsuarioModel(BaseModel):
     direccion: str
     fecha_nacimiento: str   
     activo: bool
+    telefono: str

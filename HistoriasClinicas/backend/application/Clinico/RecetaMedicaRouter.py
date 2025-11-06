@@ -4,6 +4,17 @@ from infrastructure.Clinico.RecetaMedica.RecetaMedicaInfrastructure import Recet
 
 router = APIRouter(prefix="/recetamedica", tags=["Clinico.RecetaMedica"])
 
+
+#OBTENER RECETAS MEDICAS DE LA BASE DE DATOS PARA QUE SEAN VISIBLES PARA EL PACIENTE
+@router.get(
+    "/paciente/{documento}",
+    summary="Listar recetas médicas de un paciente",
+    description="Devuelve todas las recetas médicas asociadas al documento del paciente",
+    tags=["Clinico.RecetaMedica"]
+)
+async def listar_recetas_paciente(documento: str):
+    return RecetaMedicaInfrastructure.listar_recetas_por_documento(documento)
+
 #Clinico.RecetaMedica
 #GET
 @router.get(

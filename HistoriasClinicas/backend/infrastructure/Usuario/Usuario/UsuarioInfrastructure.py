@@ -35,7 +35,7 @@ class UsuarioInfrastructure:
             )
             with conn.cursor() as cur:
                 cur.execute(
-                    'SELECT spaIngresarUsuario(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);',
+                    'SELECT spaIngresarUsuario(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);',
                     (
                         idciudad,
                         idtipodocumento,
@@ -46,7 +46,8 @@ class UsuarioInfrastructure:
                         usuario.rol,
                         usuario.numero_documento,
                         usuario.direccion,
-                        fecha_nac
+                        fecha_nac,
+                        usuario.telefono
                     )
                 )
                 conn.commit()

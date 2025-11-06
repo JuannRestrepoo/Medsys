@@ -2,91 +2,128 @@ import React, { useState } from "react";
 import "./Recetas.css";
 
 function Recetas() {
-  const [recetas, setRecetas] = useState([
-    { id: 1, paciente: "Juan Restrepo", medicamento: "Ibuprofeno 400mg", fecha: "01/11/2025", estado: "Activa" },
-    { id: 2, paciente: "María López", medicamento: "Amoxicilina 500mg", fecha: "28/10/2025", estado: "Finalizada" },
-  ]);
+  const profesional = JSON.parse(localStorage.getItem("profesional"));
 
-  const [nuevoPaciente, setNuevoPaciente] = useState("");
-  const [nuevoMedicamento, setNuevoMedicamento] = useState("");
+  const [form, setForm] = useState({
+    documento: "",
+    medicamento: "",
+    dosis: "",
+    indicaciones: "",
+  });
 
-  const handleAgregarReceta = (e) => {
+  const [mensaje, setMensaje] = useState("");
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleRegistrarReceta = async (e) => {
     e.preventDefault();
-    if (!nuevoPaciente || !nuevoMedicamento) return;
 
-    const nueva = {
-      id: recetas.length + 1,
-      paciente: nuevoPaciente,
-      medicamento: nuevoMedicamento,
-      fecha: new Date().toLocaleDateString(),
-      estado: "Activa",
-    };
+    try {
+      // 1. Buscar paciente por documento
+      const resPaciente = await fetch(
+        `http://127.0.0.1:7000/paciente/documento/${form.documento}`
+      );
+      if (!resPaciente.ok) throw new Error("Paciente no encontrado");
+      const paciente = await resPaciente.json();
 
-    setRecetas([...recetas, nueva]);
-    setNuevoPaciente("");
-    setNuevoMedicamento("");
+      // 2. Construir payload de la receta
+      const recetaPayload = {
+        idreceta: crypto.randomUUID(),
+        idpaciente: paciente.IdPaciente,
+        idprofesional: profesional.idprofesional,
+        medicamento: form.medicamento,
+        dosis: form.dosis,
+        indicaciones: form.indicaciones,
+        activo: true,
+      };
+
+      console.log("Payload enviado:", recetaPayload);
+
+      // 3. Enviar al backend
+      const res = await fetch("http://127.0.0.1:7000/recetamedica/recetamedicapost", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recetaPayload),
+      });
+
+      const data = await res.json();
+      console.log("Respuesta backend:", data);
+
+      if (!res.ok || data.error) {
+        throw new Error(data.error || JSON.stringify(data.detail));
+      }
+
+      setMensaje("✅ Receta registrada con éxito");
+      setError("");
+
+      // 4. Resetear formulario
+      setForm({ documento: "", medicamento: "", dosis: "", indicaciones: "" });
+    } catch (err) {
+      console.error(err);
+      setError("❌ No se pudo registrar la receta: " + err.message);
+      setMensaje("");
+    }
   };
 
   return (
     <div className="recetas-container">
-      <h2>💊 Recetas y Tratamientos</h2>
-      <p>Gestiona las recetas médicas de tus pacientes.</p>
+      <h2>💊 Registro de Recetas Médicas</h2>
+      <p>El profesional puede registrar recetas médicas vinculadas a un paciente.</p>
 
       {/* Formulario para nueva receta */}
-      <form className="receta-form" onSubmit={handleAgregarReceta}>
+      <form className="receta-form" onSubmit={handleRegistrarReceta}>
         <div className="form-group">
-          <label>Paciente</label>
+          <label>Documento del Paciente</label>
           <input
             type="text"
-            value={nuevoPaciente}
-            onChange={(e) => setNuevoPaciente(e.target.value)}
-            placeholder="Nombre del paciente"
+            name="documento"
+            value={form.documento}
+            onChange={handleChange}
+            placeholder="Número de documento"
+            required
           />
         </div>
         <div className="form-group">
-          <label>Medicamento / Tratamiento</label>
+          <label>Medicamento</label>
           <input
             type="text"
-            value={nuevoMedicamento}
-            onChange={(e) => setNuevoMedicamento(e.target.value)}
-            placeholder="Ej: Paracetamol 500mg cada 8h"
+            name="medicamento"
+            value={form.medicamento}
+            onChange={handleChange}
+            placeholder="Ej: Ibuprofeno 400mg"
+            required
           />
         </div>
-        <button type="submit" className="btn-add">➕ Agregar Receta</button>
+        <div className="form-group">
+          <label>Dosis</label>
+          <input
+            type="text"
+            name="dosis"
+            value={form.dosis}
+            onChange={handleChange}
+            placeholder="Ej: 1 tableta cada 8h"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Indicaciones</label>
+          <textarea
+            name="indicaciones"
+            value={form.indicaciones}
+            onChange={handleChange}
+            placeholder="Indicaciones para el paciente"
+            required
+          />
+        </div>
+        <button type="submit" className="btn-add">➕ Registrar Receta</button>
       </form>
 
-      {/* Tabla de recetas */}
-      <div className="recetas-table-container">
-        <table className="recetas-table">
-          <thead>
-            <tr>
-              <th>Paciente</th>
-              <th>Medicamento</th>
-              <th>Fecha</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recetas.map((r) => (
-              <tr key={r.id}>
-                <td>{r.paciente}</td>
-                <td>{r.medicamento}</td>
-                <td>{r.fecha}</td>
-                <td>
-                  <span className={`status ${r.estado.toLowerCase()}`}>
-                    {r.estado}
-                  </span>
-                </td>
-                <td>
-                  <button className="btn-view">Ver</button>
-                  <button className="btn-end">Finalizar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {/* Mensajes */}
+      {mensaje && <p className="mensaje-exito">{mensaje}</p>}
+      {error && <p className="mensaje-error">{error}</p>}
     </div>
   );
 }

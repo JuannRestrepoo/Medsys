@@ -21,6 +21,7 @@ function LoginCentro() {
       });
 
       const data = await response.json();
+      console.log("Respuesta login:", data);
 
       if (data.mensaje) {
         // ✅ Guardar sesión en localStorage bajo la clave "profesional"
@@ -30,6 +31,15 @@ function LoginCentro() {
           rol: data.rol,
           nombre: data.nombre
         }));
+        if (data.centro) {
+          localStorage.setItem("centro", JSON.stringify({
+            idcentro: data.centro.idcentro,
+            nombre: data.centro.nombre,
+            direccion: data.centro.direccion,
+            ciudad: data.centro.ciudad,
+            telefono: data.centro.telefono
+          }));
+        }
 
         // ✅ Redirigir al dashboard
         navigate("/profesional/dashboard");

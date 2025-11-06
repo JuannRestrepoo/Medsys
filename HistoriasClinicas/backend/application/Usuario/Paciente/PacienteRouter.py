@@ -3,6 +3,23 @@ from domain.Usuario.Paciente.PacienteModel import PacienteModel
 from infrastructure.Usuario.Paciente.PacienteInfrastructure import PacienteInfrastructure
 router = APIRouter(prefix="/paciente", tags=["Usuario.Paciente"])
 
+#Endpoint Perfil Pciente
+@router.get(
+    "/consultar_paciente_usuario",
+    summary="Consultar Paciente con datos de Usuario",
+    description="Devuelve datos del paciente junto con los datos básicos del usuario",
+    tags=["Usuario.Paciente"]
+)
+async def consultar_paciente_usuario(idusuario: str):
+    return PacienteInfrastructure.consultar_paciente_usuario(idusuario)
+
+
+
+#API PARA OBTENER PACIENTE POR DOCUMENTO
+@router.get("/documento/{documento}")
+def obtener_paciente_por_documento(documento: str):
+    return PacienteInfrastructure.obtener_paciente_por_documento(documento)
+
 #Usuario.Paciente
 #GET
 @router.get(

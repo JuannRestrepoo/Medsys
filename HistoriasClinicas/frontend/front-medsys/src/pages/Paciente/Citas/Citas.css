@@ -1,139 +1,140 @@
+/* === Contenedor principal === */
 .citas-paciente-container {
-  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #2c3e50;
+  background-color: #f4f6f9;
 }
 
-.citas-paciente-container h2 {
-  color: #00b4d8;
-  margin-bottom: 5px;
+/* === Títulos === */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #34495e;
+  border-bottom: 2px solid #dcdde1;
+  padding-bottom: 0.5rem;
 }
 
-.citas-paciente-container p {
-  color: #7f8c8d;
-  margin-bottom: 20px;
+h3 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #2d3436;
 }
 
-/* Resumen */
-.citas-summary {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 25px;
-}
-
-.summary-card {
-  flex: 1;
-  background: #ffffff;
+/* === Secciones de cita actual e historial === */
+.cita-actual,
+.citas-pasadas {
+  background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-  padding: 20px;
-  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
 }
 
-.summary-card h3 {
-  margin: 0;
-  font-size: 1.8rem;
-  color: #00b4d8;
+/* === Detalle de cita actual === */
+.cita-detalle p {
+  margin: 0.6rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-.summary-card p {
-  margin: 5px 0 0;
-  color: #7f8c8d;
+.cita-detalle strong {
+  color: #2c3e50;
 }
 
-/* Tabla */
-.citas-table-container {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-  padding: 20px;
-  margin-bottom: 30px;
-  overflow-x: auto;
-}
-
+/* === Tabla de historial === */
 .citas-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
 }
 
 .citas-table th,
 .citas-table td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ecf0f1;
   text-align: left;
-  font-size: 0.95rem;
 }
 
 .citas-table th {
-  background: #f0f8fa;
-  font-weight: 600;
+  background-color: #f0f3f5;
   color: #2c3e50;
+  font-weight: 600;
 }
 
+.citas-table tr:hover {
+  background-color: #f9fbfc;
+}
+
+/* === Estado de cita === */
 .status {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
   font-weight: 600;
-  color: white;
+  font-size: 0.85rem;
+  text-transform: capitalize;
 }
 
 .status.pendiente {
-  background: #f39c12;
+  background-color: #fff3cd;
+  color: #856404;
 }
 
 .status.confirmada {
-  background: #2ecc71;
+  background-color: #d1ecf1;
+  color: #0c5460;
 }
 
 .status.completada {
-  background: #3498db;
+  background-color: #d4edda;
+  color: #155724;
 }
 
-/* Formulario */
-.citas-form-container {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+.status.cancelada {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
-.citas-form {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.form-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #2c3e50;
-}
-
-.form-group input,
-.form-group select {
-  padding: 10px 14px;
-  border: 1px solid #ddd;
+/* === Botón cancelar cita === */
+.btn-cancelar {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.4rem;
+  background-color: #e74c3c;
+  color: #ffffff;
+  border: none;
   border-radius: 8px;
   font-size: 0.95rem;
-}
-
-.btn-agendar {
-  background: #00b4d8;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 10px;
-  cursor: pointer;
   font-weight: 600;
-  transition: all 0.3s ease;
-  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
 }
 
-.btn-agendar:hover {
-  background: #0096c7;
+.btn-cancelar:hover {
+  background-color: #c0392b;
+  transform: scale(1.03);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .citas-paciente-container {
+    padding: 1rem;
+  }
+
+  .citas-table th,
+  .citas-table td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .btn-cancelar {
+    width: 100%;
+    text-align: center;
+  }
 }

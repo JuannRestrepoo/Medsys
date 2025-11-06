@@ -1,0 +1,8 @@
+FACTURA
+Paciente: Juan Pérez
+Documento: 123456789
+Servicio: Consulta médica
+Fecha: 2025-11-06
+Monto: 12000.0
+Profesional: Monica Gallego Ramirez
+Centro: Clínica Central - Calle 123 #45-67 - Medellín - 604-1234567

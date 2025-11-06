@@ -17,6 +17,10 @@ async def consultar_profesional_usuario(idusuario: str):
     return ProfesionalInfrastructure.consultar_profesional_usuario(idusuario)
 
 
+#ENDPOINT QUE DEVUELVE LOS PROFESIUONALES DEL CENTRO EN EL CUAL SE REGISTRO EL PACIENTE
+@router.get("/paciente/{idusuario}/profesionales")
+def listar_profesionales_para_paciente(idusuario: str):
+    return ProfesionalInfrastructure.listar_profesionales_para_paciente(idusuario)
 
 
 

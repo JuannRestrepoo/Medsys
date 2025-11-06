@@ -1,0 +1,7 @@
+FACTURA
+ID Cobro: a88e568c-a6f4-436d-aab3-3bf452eeaca6
+Servicio: Consulta Dermatologica
+Fecha: 2025-11-05 00:00:00
+Monto: 1.00
+Profesional: 214820bd-2660-4c9f-a2c4-148c2f4e0e08
+Paciente: ea7822c1-df64-41b1-bfe1-dc19d506545c

@@ -1,33 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Resultados.css";
 
 function ResultadosPaciente() {
-  const [resultados] = useState([
-    {
-      id: 1,
-      fecha: "01/11/2025",
-      profesional: "Dr. Juan Pérez",
-      tipo: "Examen de sangre",
-      archivo: "examen-sangre.pdf",
-      estado: "Disponible",
-    },
-    {
-      id: 2,
-      fecha: "20/10/2025",
-      profesional: "Dra. María López",
-      tipo: "Radiografía de tórax",
-      archivo: "radiografia-torax.jpg",
-      estado: "Disponible",
-    },
-    {
-      id: 3,
-      fecha: "05/09/2025",
-      profesional: "Dr. Carlos Gómez",
-      tipo: "Informe psicológico",
-      archivo: "informe-psicologia.pdf",
-      estado: "Archivado",
-    },
-  ]);
+  const paciente = JSON.parse(localStorage.getItem("paciente"));
+  const [resultados, setResultados] = useState([]);
+  const [seleccionado, setSeleccionado] = useState(null);
+
+  useEffect(() => {
+    const fetchResultados = async () => {
+      if (!paciente || !paciente.documento) return;
+
+      try {
+        const res = await fetch(`http://127.0.0.1:7000/resultados/paciente/${paciente.documento}`);
+        if (!res.ok) throw new Error("Error al obtener resultados médicos");
+        const data = await res.json();
+        setResultados(data);
+      } catch (err) {
+        console.error("Error cargando resultados:", err);
+      }
+    };
+
+    fetchResultados();
+  }, [paciente]);
 
   return (
     <div className="resultados-container">
@@ -37,11 +31,11 @@ function ResultadosPaciente() {
       {/* Resumen */}
       <div className="resultados-summary">
         <div className="summary-card">
-          <h3>{resultados.filter(r => r.estado === "Disponible").length}</h3>
+          <h3>{resultados.filter(r => r.activo).length}</h3>
           <p>Disponibles</p>
         </div>
         <div className="summary-card">
-          <h3>{resultados.filter(r => r.estado === "Archivado").length}</h3>
+          <h3>{resultados.filter(r => !r.activo).length}</h3>
           <p>Archivados</p>
         </div>
       </div>
@@ -53,7 +47,7 @@ function ResultadosPaciente() {
             <tr>
               <th>Fecha</th>
               <th>Profesional</th>
-              <th>Tipo</th>
+              <th>Título</th>
               <th>Archivo</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -61,25 +55,43 @@ function ResultadosPaciente() {
           </thead>
           <tbody>
             {resultados.map((r) => (
-              <tr key={r.id}>
-                <td>{r.fecha}</td>
-                <td>{r.profesional}</td>
-                <td>{r.tipo}</td>
+              <tr key={r.idresultado}>
+                <td>{new Date(r.fecha).toLocaleDateString()}</td>
+                <td>{r.nombre_profesional}</td>
+                <td>{r.titulo}</td>
                 <td>{r.archivo}</td>
                 <td>
-                  <span className={`status ${r.estado.toLowerCase()}`}>
-                    {r.estado}
+                  <span className={`status ${r.activo ? "disponible" : "archivado"}`}>
+                    {r.activo ? "Disponible" : "Archivado"}
                   </span>
                 </td>
                 <td>
-                  <button className="btn-view">Ver</button>
-                  <button className="btn-download">Descargar</button>
+                  <button className="btn-view" onClick={() => setSeleccionado(r)}>Ver Detalles</button>
+                  <button
+                    className="btn-download"
+                    onClick={() => window.open(`http://127.0.0.1:7000/uploads/${r.archivo}`, "_blank")}
+                  >
+                    Descargar
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Detalle */}
+      {seleccionado && (
+        <div className="detalle-resultado">
+          <h3>📋 Detalle del resultado</h3>
+          <p><strong>Título:</strong> {seleccionado.titulo}</p>
+          <p><strong>Descripción:</strong> {seleccionado.descripcion}</p>
+          <p><strong>Profesional:</strong> {seleccionado.nombre_profesional}</p>
+          <p><strong>Archivo:</strong> {seleccionado.archivo}</p>
+          <p><strong>Estado:</strong> {seleccionado.activo ? "Disponible" : "Archivado"}</p>
+          <button className="btn-cerrar" onClick={() => setSeleccionado(null)}>Cerrar</button>
+        </div>
+      )}
 
       {/* Nota */}
       <div className="resultados-nota">

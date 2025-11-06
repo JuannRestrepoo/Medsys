@@ -1,8 +1,17 @@
 from fastapi import APIRouter
 from domain.Organizacion.Centro.CentroModel import  CentroModel
 from infrastructure.Organizacion.CentroInfrastructure import CentroInfrastructure
-
+from infrastructure.Usuario.Profesional.ProfesionalInfrastructure import ProfesionalInfrastructure
 router = APIRouter(prefix="/centro", tags=["Organizacion.Centro"])
+
+
+
+#Profesionales de un centro:
+
+@router.get("/profesionales/centro/{idcentro}")
+def listar_profesionales_centro(idcentro: str):
+    return ProfesionalInfrastructure.listar_profesionales_centro(idcentro)
+
 
 #Organizacion.Centro
 

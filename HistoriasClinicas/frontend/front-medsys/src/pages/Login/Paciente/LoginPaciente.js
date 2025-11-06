@@ -23,13 +23,20 @@ function LoginPaciente() {
       });
 
       const data = await response.json();
+      console.log("Respuesta login:", data);
 
-      if (data.mensaje) {
+      if (response.ok && data.mensaje) {
         // ✅ Login exitoso
-        console.log("Login correcto:", data);
-
-        // Puedes guardar info en localStorage si quieres mantener sesión
-        localStorage.setItem("paciente", JSON.stringify(data));
+        localStorage.setItem(
+          "paciente",
+          JSON.stringify({
+            idpaciente: data.idpaciente,   // 👈 este campo es vital para los endpoints
+            idusuario: data.idusuario,
+            nombre: data.nombre,
+            rol: data.rol,
+            documento: data.numero_documento,
+          })
+        );
 
         navigate("/paciente/portal");
       } else {
@@ -37,6 +44,7 @@ function LoginPaciente() {
         setError(data.error || "Credenciales inválidas");
       }
     } catch (err) {
+      console.error("Error en login:", err);
       setError("No se pudo conectar con el servidor");
     }
   };
