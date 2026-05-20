@@ -1,0 +1,181 @@
+.perfil-container {
+  max-width: 700px;
+  margin: 3rem auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  font-family: "Poppins", "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  text-align: center;
+}
+
+
+/* Título elegante */
+.perfil-titulo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #1d3557;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 10px;
+}
+
+/* Línea decorativa bajo el título */
+.perfil-titulo::after {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 4px;
+  background: linear-gradient(90deg, #457b9d, #1d3557);
+  margin: 12px auto 0 auto;
+  border-radius: 2px;
+}
+
+/* Header con degradado elegante */
+.perfil-header {
+  background: linear-gradient(135deg, #1d3557, #457b9d);
+  padding: 2.5rem 1rem 2rem 1rem;
+  color: #fff;
+  position: relative;
+}
+
+/* Avatar circular */
+.perfil-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #f1faee;
+  color: #1d3557;
+  font-size: 2.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  border: 4px solid #fff;
+}
+
+/* Título principal */
+.perfil-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+/* Línea decorativa debajo del título */
+.perfil-header h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: #f1faee;
+  margin: 12px auto 0 auto;
+  border-radius: 2px;
+}
+
+/* Subtítulo */
+.perfil-header span {
+  display: block;
+  font-size: 1rem;
+  font-style: italic;
+  color: #f1faee;
+  margin-top: 8px;
+  opacity: 0.9;
+}
+
+/* Datos del paciente */
+.perfil-datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 30px;
+  padding: 2rem;
+}
+
+.perfil-datos p {
+  margin: 0;
+  font-size: 1rem;
+  background: #f8f9fa;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.perfil-datos p:hover {
+  background: #edf6f9;
+  transform: translateY(-2px);
+}
+
+.perfil-datos strong {
+  display: block;
+  font-weight: 600;
+  color: #457b9d;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Botones de acción */
+.perfil-actions {
+  padding: 1.5rem;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+}
+
+.perfil-actions button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin: 0 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-edit {
+  background: #457b9d;
+  color: white;
+}
+.btn-edit:hover {
+  background: #1d3557;
+  transform: translateY(-2px);
+}
+
+.btn-save {
+  background: #2a9d8f;
+  color: white;
+}
+.btn-save:hover {
+  background: #21867a;
+  transform: translateY(-2px);
+}
+
+.btn-cancel {
+  background: #e63946;
+  color: white;
+}
+.btn-cancel:hover {
+  background: #c92a36;
+  transform: translateY(-2px);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .perfil-datos {
+    grid-template-columns: 1fr;
+  }
+}

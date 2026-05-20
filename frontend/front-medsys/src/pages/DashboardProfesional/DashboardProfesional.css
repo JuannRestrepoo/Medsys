@@ -1,0 +1,197 @@
+/* Contenedor principal */
+.dashboard-container {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: #f4f6f9;
+  min-height: 100vh;
+  padding: 2rem;
+  color: #333;
+}
+
+/* Tarjetas resumen */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  /* Flexbox en columna para centrar ícono y texto */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Ícono grande en las tarjetas */
+.card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+  color: #3498db;
+}
+
+.card-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Secciones */
+.dashboard-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+
+  /* Centrar contenido */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dashboard-section h3 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 0.5rem;
+  width: 100%;
+  text-align: center;
+}
+
+/* Layout de filas */
+.cards-row {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cards-row.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.cards-row.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.cards-row.one {
+  grid-template-columns: 1fr;
+}
+
+/* Tabla de pacientes */
+.patients-table {
+  width: 80%; /* más estrecho para que se vea centrado */
+  margin: 0 auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.patients-table th,
+.patients-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.patients-table th {
+  background: #f9fafc;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.patients-table tr:hover {
+  background: #f5f7fa;
+}
+
+/* Listas */
+.history-list,
+.agenda-list,
+.prescriptions-list,
+.reports-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.history-list li,
+.agenda-list li,
+.prescriptions-list li,
+.reports-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.history-list li:last-child,
+.agenda-list li:last-child,
+.prescriptions-list li:last-child,
+.reports-list li:last-child {
+  border-bottom: none;
+}
+
+/* Botones */
+button,
+.btn-secondary {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin: 0.5rem auto; /* centrado */
+  display: block;
+}
+
+button:hover,
+.btn-secondary:hover {
+  background: #2980b9;
+}
+
+/* Estados */
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status.green {
+  background: #eafaf1;
+  color: #27ae60;
+}
+
+.status.red {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+/* Responsive: en pantallas pequeñas las tarjetas se acomodan en 2 columnas */
+@media (max-width: 768px) {
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+}

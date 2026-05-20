@@ -1,0 +1,96 @@
+.pagos-container {
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+}
+
+.pagos-container h2 {
+  color: #0096c7;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.pagos-container p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+/* Tabla */
+.pagos-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.pagos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pagos-table th,
+.pagos-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.pagos-table th {
+  background: linear-gradient(135deg, #e0f7fa, #f0f8fa);
+  font-weight: 600;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Estados */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  min-width: 90px;
+}
+
+.status.pendiente {
+  background: linear-gradient(135deg, #f39c12, #f1c40f);
+  box-shadow: 0 3px 6px rgba(243, 156, 18, 0.3);
+}
+
+.status.pagado {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  box-shadow: 0 3px 6px rgba(39, 174, 96, 0.3);
+}
+
+/* Botones */
+.btn-registrar {
+  display: inline-block;
+  background: linear-gradient(135deg, #0096c7, #00b4d8);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 150, 199, 0.3);
+  margin-top: 10px;
+}
+
+.btn-registrar:hover {
+  background: linear-gradient(135deg, #0077a3, #0096c7);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 150, 199, 0.4);
+}
+
+.btn-registrar:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 150, 199, 0.3);
+}

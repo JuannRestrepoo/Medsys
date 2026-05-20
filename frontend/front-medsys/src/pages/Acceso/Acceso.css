@@ -1,0 +1,79 @@
+.acceso-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+}
+
+.acceso-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.acceso-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #0097a7;
+}
+
+.acceso-card p {
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.acceso-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn-acceso {
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-acceso.profesional {
+  background: #00bcd4;
+  color: white;
+}
+
+.btn-acceso.profesional:hover {
+  background: #0097a7;
+  transform: translateY(-2px);
+}
+
+.btn-acceso.paciente {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-acceso.paciente:hover {
+  background: #388e3c;
+  transform: translateY(-2px);
+}
+
+.extra-links {
+  margin-top: 25px;
+  font-size: 0.9rem;
+}
+
+.extra-links a {
+  color: #0097a7;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.extra-links a:hover {
+  text-decoration: underline;
+}

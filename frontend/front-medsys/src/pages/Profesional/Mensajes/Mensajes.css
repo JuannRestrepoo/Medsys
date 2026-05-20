@@ -1,0 +1,222 @@
+.mensajes-container {
+  padding: 20px;
+}
+
+.mensajes-container h2 {
+  color: #0096c7;
+  margin-bottom: 5px;
+}
+
+.mensajes-container p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.mensajes-layout {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 180px); 
+  min-height: 450px;
+}
+
+/* ─── LISTA DE CONVERSACIONES ─── */
+.conversaciones-lista {
+  width: 30%;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.conversaciones-lista h3 {
+  margin-bottom: 12px;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+.conversaciones-lista ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.conversaciones-lista li {
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Controla el texto del último mensaje en la barra lateral */
+.conversaciones-lista li p {
+  margin: 4px 0 0 0;
+  font-size: 0.8rem;
+  opacity: 0.85;
+  color: inherit; /* Sigue el color del texto del li */
+}
+
+.conversaciones-lista li:hover {
+  background: #f4fafd;
+}
+
+.conversaciones-lista li.activo {
+  background: #0096c7;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 150, 199, 0.25);
+}
+
+/* ─── ÁREA DE CHAT COMPLETA ─── */
+.chat-area {
+  flex: 1;
+  background: #fdfdfd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #eef2f3;
+}
+
+.chat-header {
+  padding: 15px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #eceff1;
+  font-weight: 600;
+  color: #0096c7;
+  font-size: 1.05rem;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #0096c7;
+}
+
+/* ─── CONTENEDOR DE MENSAJES ─── */
+.chat-mensajes {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #f8f9fa;
+}
+
+/* ─── BURBUJAS DE TEXTO ESTILIZADAS ─── */
+.mensaje {
+  max-width: 65%;
+  padding: 8px 14px 20px 14px; /* Espacio extra abajo para la hora absoluta */
+  font-size: 0.92rem;
+  line-height: 1.4;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Reset de etiquetas p dentro de los mensajes por si acaso */
+.mensaje p {
+  margin: 0;
+  color: inherit;
+}
+
+.mensaje-texto {
+  margin-bottom: 2px;
+}
+
+/* Burbuja Derecha (Remitente activo) */
+.mensaje.doctor {
+  align-self: flex-end;
+  background: #0096c7;
+  color: white;
+  border-radius: 16px 16px 4px 16px;
+}
+
+/* Burbuja Izquierda (Destinatario) */
+.mensaje.paciente {
+  align-self: flex-start;
+  background: #ffffff;
+  color: #2c3e50;
+  border-radius: 16px 16px 16px 4px;
+  border: 1px solid #e8ecee;
+}
+
+/* ─── CONTROL DE HORA DENTRO DE LAS BURBUJAS ─── */
+.mensaje-hora {
+  font-size: 0.72rem;
+  position: absolute;
+  bottom: 4px;
+  right: 10px;
+  opacity: 0.65;
+}
+
+.mensaje.doctor .mensaje-hora {
+  color: #e0f2fe;
+}
+
+.mensaje.paciente .mensaje-hora {
+  color: #7f8c8d;
+}
+
+/* ─── CONTROLES DE ENTRADA (INPUT) ─── */
+.chat-input {
+  display: flex;
+  background: #ffffff;
+  border-top: 1px solid #eceff1;
+  padding: 10px;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.chat-input input:focus {
+  border-color: #0096c7;
+}
+
+.chat-input button {
+  background: #0096c7;
+  color: white;
+  border: none;
+  padding: 0 22px;
+  border-radius: 24px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.chat-input button:hover {
+  background: #0077a3;
+  transform: translateY(-1px);
+}
+
+.chat-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  background: #f8f9fa;
+  font-size: 0.95rem;
+}
+
+.chat-placeholder p {
+  margin: 0;
+}

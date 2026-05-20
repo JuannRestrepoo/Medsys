@@ -1,0 +1,56 @@
+.registrar-container {
+  padding: 20px;
+}
+
+.registrar-container h2 {
+  color: #0096c7;
+  margin-bottom: 5px;
+}
+
+.registrar-container p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.registrar-form {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  max-width: 600px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.btn-save {
+  background: #0096c7;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-save:hover {
+  background: #0077a3;
+}

@@ -1,0 +1,118 @@
+.resultados-container {
+  padding: 20px;
+}
+
+.resultados-container h2 {
+  color: #0096c7;
+  margin-bottom: 5px;
+}
+
+.resultados-container p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+/* Formulario */
+.resultado-form {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  margin-bottom: 25px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #2c3e50;
+}
+
+.form-group input {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.btn-upload {
+  background: #0096c7;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  align-self: flex-end;
+}
+
+.btn-upload:hover {
+  background: #0077a3;
+}
+
+/* Tabla */
+.resultados-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.resultados-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.resultados-table th,
+.resultados-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.resultados-table th {
+  background: #f0f8fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Botones */
+.btn-view,
+.btn-delete {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-right: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-view {
+  background: #48cae4;
+  color: white;
+}
+
+.btn-view:hover {
+  background: #00b4d8;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+}

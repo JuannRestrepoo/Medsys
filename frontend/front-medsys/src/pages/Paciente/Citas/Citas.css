@@ -1,0 +1,140 @@
+/* === Contenedor principal === */
+.citas-paciente-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #2c3e50;
+  background-color: #f4f6f9;
+}
+
+/* === Títulos === */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #34495e;
+  border-bottom: 2px solid #dcdde1;
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #2d3436;
+}
+
+/* === Secciones de cita actual e historial === */
+.cita-actual,
+.citas-pasadas {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+}
+
+/* === Detalle de cita actual === */
+.cita-detalle p {
+  margin: 0.6rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cita-detalle strong {
+  color: #2c3e50;
+}
+
+/* === Tabla de historial === */
+.citas-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.citas-table th,
+.citas-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ecf0f1;
+  text-align: left;
+}
+
+.citas-table th {
+  background-color: #f0f3f5;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.citas-table tr:hover {
+  background-color: #f9fbfc;
+}
+
+/* === Estado de cita === */
+.status {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.status.pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status.confirmada {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status.completada {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status.cancelada {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* === Botón cancelar cita === */
+.btn-cancelar {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.4rem;
+  background-color: #e74c3c;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+}
+
+.btn-cancelar:hover {
+  background-color: #c0392b;
+  transform: scale(1.03);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .citas-paciente-container {
+    padding: 1rem;
+  }
+
+  .citas-table th,
+  .citas-table td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .btn-cancelar {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,16 @@
+uploads/
+backend/uploads/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+medsys_security.log
+medsys_security_incidents.log
+
+frontend/front-medsys/node_modules/
+frontend/front-medsys/build/
+frontend/front-medsys/coverage/
+
+.DS_Store
